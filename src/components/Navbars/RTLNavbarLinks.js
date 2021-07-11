@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,12 +19,21 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/rtlHeaderLinksStyle.js";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(styles);
 
 export default function RTLNavbarLinks() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
+  const token = useSelector(state => state.activeUserToken);
+  const history = useHistory();
+  useEffect(() => {
+    if (!token) {
+      history.push("/login");
+    }
+  }, [token,history]);
   const handleToggle = event => {
     if (open && open.contains(event.target)) {
       setOpen(null);
