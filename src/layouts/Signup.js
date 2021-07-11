@@ -41,8 +41,8 @@ export default function SignUp() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const [name, setName] = useState(null);
-  const [lastName, setLastName] = useState(null);
+  const [name, setName] = useState(" ");
+  const [lastName, setLastName] = useState(" ");
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [passwordConfirm, setPasswordConfirm] = useState(null);
