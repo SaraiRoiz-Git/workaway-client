@@ -20,10 +20,9 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
-import * as action from 'redux/actions/actions';
+import * as action from "redux/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
@@ -34,14 +33,12 @@ export default function AdminNavbarLinks() {
   const history = useHistory();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
-  const state = useSelector(state => state);
-  useEffect(() => { console.log("state", state) }, [state]);
 
   useEffect(() => {
     if (!token) {
-    history.push('/login')
+      history.push("/login");
     }
-  }, [token]);
+  }, [token,history]);
 
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
@@ -60,12 +57,10 @@ export default function AdminNavbarLinks() {
       setOpenProfile(event.currentTarget);
     }
   };
-  
-  const handleCloseProfile = () => {
-    axios.post('http://localhost:3000/api/user/logout',token)
-    dispatch(action.onLogOut(token))
-  };
 
+  const handleCloseProfile = () => {
+    dispatch(action.onLogOut(token));
+  };
 
   return (
     <div>

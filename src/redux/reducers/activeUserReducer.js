@@ -1,31 +1,27 @@
-import * as AT from '../actions/actionsTypes'
-import React from 'react'
+import * as AT from "../actions/actionsTypes";
 
 const initialState = {
-    activeUser : "",
-}
+  activeUser: ""
+};
 
 const activeUserReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case AT.ON_LOGIN:
-            console.log('AT.ON_LOGIN')
-            console.log(action.payload)
-            return {
-                ...state,
-                activeUserToken: action.payload,
-                activeUser:true
-            };
-        case AT.ON_LOGOUT:
-            return {
-                ...state,
-                activeUserToken: "",
-                activeUser:false
-            };
+  switch (action.type) {
+    case AT.ON_LOGIN:
+      return {
+        ...state,
+        activeUserToken: action.payload,
+        activeUser: true
+      };
+    case AT.ON_LOGOUT:
+      return {
+        ...state,
+        activeUserToken: "",
+        activeUser: false
+      };
 
-            default:
-                return state;
-
-    }
-}
+    default:
+      return state;
+  }
+};
 
 export default activeUserReducer;
