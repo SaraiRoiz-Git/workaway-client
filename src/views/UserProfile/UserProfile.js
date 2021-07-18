@@ -47,7 +47,7 @@ export default function UserProfile() {
   const token = useSelector(state => state.activeUserToken)
   const dispatch = useDispatch();
   const email = userData.email ? userData.email : "";
-  const [username, setUsername] = useState(userData.username ? userData.username : "");
+  const [userName, setUserName] = useState(userData.userName ? userData.userName : "");
   const [name, setFirstName] = useState(userData.name ? userData.name : "");
   const [lastName, setLastName] = useState(userData.lastName ? userData.lastName : "");
   const [city, setCity] = useState(userData.city ? userData.city : "");
@@ -71,7 +71,7 @@ export default function UserProfile() {
   };
 
   const updateData = async () => {
-    serverCallPut("update-data", { email, username, name, lastName, city, country, postal, about }
+    serverCallPut("update-data", { email, userName, name, lastName, city, country, postal, about }
     ,token,callbackSucss,callbackFailur)
   }
 
@@ -102,8 +102,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Username"
                     id="username"
-                    defaultValue={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    defaultValue={userName}
+                    onChange={(e) => setUserName(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}

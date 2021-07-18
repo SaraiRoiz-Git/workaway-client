@@ -142,9 +142,9 @@ export default function Login() {
   } else {
 
     return (
-      <Container component="main"className={classes.paper} maxWidth="xs">
+      <Container component="main" className={classes.paper} maxWidth="xs">
         <CssBaseline />
-        <CircularProgress  disableShrink />
+        <CircularProgress disableShrink />
       </Container>
     )
 
