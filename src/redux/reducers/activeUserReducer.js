@@ -9,7 +9,8 @@ const activeUserReducer = (state = initialState, action) => {
     case AT.ON_LOGIN:
       return {
         ...state,
-        activeUserToken: action.payload,
+        activeUserToken: action.payload.token,
+        userData:action.payload.user,
         activeUser: true
       };
     case AT.ON_LOGOUT:
@@ -19,6 +20,11 @@ const activeUserReducer = (state = initialState, action) => {
         activeUser: false
       };
 
+    case AT.ON_UPDATE:
+      return {
+        ...state,
+        userData: action.payload,
+      };
     default:
       return state;
   }

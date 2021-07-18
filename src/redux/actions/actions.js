@@ -12,3 +12,9 @@ export const onLogOut = (token) => dispatch => {
         type: AT.ON_LOGOUT
     }))
 }
+
+export const onUpdate = (userdata) => dispatch => {
+    return (dispatch({
+        type: AT.ON_UPDATE
+    }))
+}

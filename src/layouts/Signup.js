@@ -16,6 +16,8 @@ import { Modal } from "react-bootstrap";
 import { serverCallPost } from "serverReq/axios";
 import { validateEmail } from "utility/validations";
 import { validatePassword } from "utility/validations";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -50,6 +52,7 @@ export default function SignUp() {
   const [error, setError] = useState(false);
   const [passwordError, setPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
+  const [load, setloader] = useState(false);
 
   const history = useHistory();
 
@@ -57,17 +60,20 @@ export default function SignUp() {
     if (response) {
       if (response.status === 200) {
         dispatch(action.onLogin(response.data));
+        setloader(false)
         history.push("/admin");
       }
     }
   };
 
   const callbackFailur = () => {
+    setloader(false)
     setmodalDisplay(true);
     setError("Email is alredy exit");
   };
 
   const submitSignup = async () => {
+    setloader(true)
     setEmailError(null);
     setPasswordError(null);
     if (
@@ -82,129 +88,140 @@ export default function SignUp() {
       );
     }
   };
+  if (!load) {
+    return (
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  value={name}
+                  onChange={e => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  value={lastName}
+                  onChange={e => {
+                    setLastName(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  error={emailError ? true : false}
+                  helperText={emailError ? emailError : null}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  error={passwordError ? true : false}
+                  helperText={passwordError ? passwordError : null}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={e => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password confirm"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={passwordConfirm}
+                  onChange={e => {
+                    setPasswordConfirm(e.target.value);
+                  }}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={submitSignup}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+          <Modal show={displayModal} onHide={() => setmodalDisplay(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Error</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>{error ? error : "Somthing went worng"}</p>
+            </Modal.Body>
+          </Modal>
+        </div>
+      </Container>
+    );
+  } else {
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                value={name}
-                onChange={e => {
-                  setName(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={lastName}
-                onChange={e => {
-                  setLastName(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                error={emailError ? true : false}
-                helperText={emailError ? emailError : null}
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={email}
-                onChange={e => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                error={passwordError ? true : false}
-                helperText={passwordError ? passwordError : null}
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={e => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password confirm"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={passwordConfirm}
-                onChange={e => {
-                  setPasswordConfirm(e.target.value);
-                }}
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={submitSignup}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-        <Modal show={displayModal} onHide={() => setmodalDisplay(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Error</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>{error ? error : "Somthing went worng"}</p>
-          </Modal.Body>
-        </Modal>
-      </div>
-    </Container>
-  );
+    return (
+      <Container component="main"className={classes.paper} maxWidth="xs">
+        <CssBaseline />
+        <CircularProgress  disableShrink />
+      </Container>
+    )
+
+  }
+
 }

@@ -36,7 +36,7 @@ export default function AdminNavbarLinks() {
 
   useEffect(() => {
     if (!token) {
-      history.push("/login");
+       history.push("/login");
     }
   }, [token,history]);
 

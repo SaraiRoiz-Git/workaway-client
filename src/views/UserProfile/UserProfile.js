@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -14,7 +14,10 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import avatar from "assets/img/faces/marc.jpg";
-
+import { useDispatch, useSelector } from "react-redux";
+import { serverCallPut } from "serverReq/axios";
+import * as action from "redux/actions/actions";
+import { useHistory } from "react-router-dom";
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -38,6 +41,43 @@ const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
   const classes = useStyles();
+  const userData = useSelector(state => state.userData)
+
+  const token = useSelector(state => state.activeUserToken)
+  const dispatch = useDispatch();
+  const email = userData.email ? userData.email : "";
+  const [username, setUsername] = useState(userData.username ? userData.username : "");
+  const [name, setFirstName] = useState(userData.name ? userData.name : "");
+  const [lastName, setLastName] = useState(userData.lastName ? userData.lastName : "");
+  const [city, setCity] = useState(userData.city ? userData.city : "");
+  const [country, setCountry] = useState(userData.country ? userData.country : "");
+  const [postal, setPostal] = useState(userData.postal ? userData.postal : "");
+  const [about, setAbout] = useState(userData.about ? userData.abou : "");
+  const [error, setError] = useState(false);
+
+  const history = useHistory();
+  useEffect(() => {
+    console.log("userData", userData)
+  }, [userData]);
+
+  const callbackSucss = response => {
+    if (response) {
+      if (response.status === 200) {
+        dispatch(action.onUpdate(response.data));
+        history.push("/admin");
+      }
+    }
+  };
+
+  const callbackFailur = () => {
+    setError("could not update details");
+  };
+
+  const updateData = async () => {
+    serverCallPut("update-data", { email, username, name, lastName, city, country, postal, about }
+    ,token,callbackSucss,callbackFailur)
+  }
+
   return (
     <div>
       <GridContainer>
@@ -65,6 +105,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Username"
                     id="username"
+                    defaultValue={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -74,8 +116,13 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Email address"
                     id="email-address"
+                    disabled
+                    defaultValue={email}
                     formControlProps={{
                       fullWidth: true
+                    }}
+                    inputProps={{
+                      disabled: true
                     }}
                   />
                 </GridItem>
@@ -85,6 +132,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="First Name"
                     id="first-name"
+                    defaultValue={name}
+                    onChange={(e) => setFirstName(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -94,6 +143,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Last Name"
                     id="last-name"
+                    defaultValue={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -105,6 +156,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="City"
                     id="city"
+                    defaultValue={city}
+                    onChange={(e) => setCity(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -114,6 +167,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Country"
                     id="country"
+                    defaultValue={country}
+                    onChange={(e) => setCountry(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -123,6 +178,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Postal Code"
                     id="postal-code"
+                    defaultValue={postal}
+                    onChange={(e) => setPostal(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -135,6 +192,8 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
                     id="about-me"
+                    defaultValue={about}
+                    onChange={(e) => setAbout(e.target.value)}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -147,7 +206,8 @@ export default function UserProfile() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button color="primary"
+                onClick={updateData}>Update Profile</Button>
             </CardFooter>
           </Card>
         </GridItem>
