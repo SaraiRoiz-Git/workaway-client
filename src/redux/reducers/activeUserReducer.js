@@ -1,7 +1,9 @@
 import * as AT from "../actions/actionsTypes";
 
 const initialState = {
-  activeUser: ""
+  activeUser: "",
+  userData:""
+
 };
 
 const activeUserReducer = (state = initialState, action) => {
@@ -23,7 +25,7 @@ const activeUserReducer = (state = initialState, action) => {
     case AT.ON_UPDATE:
       return {
         ...state,
-        userData: action.payload,
+        userData: {...action.payload},
       };
     default:
       return state;

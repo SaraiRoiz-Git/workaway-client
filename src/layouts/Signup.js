@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
-  }
+  },
+
 }));
 
 export default function SignUp() {
@@ -172,10 +173,10 @@ export default function SignUp() {
                   variant="outlined"
                   required
                   fullWidth
-                  name="password"
+                  name="password confirm"
                   label="Password confirm"
                   type="password"
-                  id="password"
+                  id="passwordconfirm"
                   autoComplete="current-password"
                   value={passwordConfirm}
                   onChange={e => {

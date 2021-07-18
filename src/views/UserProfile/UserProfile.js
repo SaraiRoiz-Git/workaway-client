@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -17,7 +17,8 @@ import avatar from "assets/img/faces/marc.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { serverCallPut } from "serverReq/axios";
 import * as action from "redux/actions/actions";
-import { useHistory } from "react-router-dom";
+import { Modal } from "react-bootstrap";
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -52,24 +53,20 @@ export default function UserProfile() {
   const [city, setCity] = useState(userData.city ? userData.city : "");
   const [country, setCountry] = useState(userData.country ? userData.country : "");
   const [postal, setPostal] = useState(userData.postal ? userData.postal : "");
-  const [about, setAbout] = useState(userData.about ? userData.abou : "");
+  const [about, setAbout] = useState(userData.about ? userData.about : "");
   const [error, setError] = useState(false);
-
-  const history = useHistory();
-  useEffect(() => {
-    console.log("userData", userData)
-  }, [userData]);
+  const [displayModal, setmodalDisplay] = useState(false);
 
   const callbackSucss = response => {
     if (response) {
       if (response.status === 200) {
         dispatch(action.onUpdate(response.data));
-        history.push("/admin");
       }
     }
   };
 
   const callbackFailur = () => {
+    setmodalDisplay(true);
     setError("could not update details");
   };
 
@@ -233,6 +230,14 @@ export default function UserProfile() {
           </Card>
         </GridItem>
       </GridContainer>
+      <Modal show={displayModal} onHide={() => setmodalDisplay(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Error</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>{error ? error : "Somthing went worng"}</p>
+            </Modal.Body>
+          </Modal>
     </div>
   );
 }

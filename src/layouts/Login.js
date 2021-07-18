@@ -64,7 +64,6 @@ export default function Login() {
 
   const submitLogin = async () => {
     setloader(true);
-    console.log('in submit login')
     serverCallPost("login", { email, password }, callbackSucss, callbackFailur);
   };
 

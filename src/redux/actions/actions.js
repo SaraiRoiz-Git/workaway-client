@@ -7,7 +7,7 @@ export const onLogin = (token) => dispatch => {
     }))
 }
 
-export const onLogOut = (token) => dispatch => {
+export const onLogOut = () => dispatch => {
     return (dispatch({
         type: AT.ON_LOGOUT
     }))
@@ -15,6 +15,7 @@ export const onLogOut = (token) => dispatch => {
 
 export const onUpdate = (userdata) => dispatch => {
     return (dispatch({
-        type: AT.ON_UPDATE
+        type: AT.ON_UPDATE,
+        payload: userdata
     }))
 }
