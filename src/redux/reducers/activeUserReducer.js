@@ -3,7 +3,6 @@ import * as AT from "../actions/actionsTypes";
 const initialState = {
   activeUser: "",
   userData:""
-
 };
 
 const activeUserReducer = (state = initialState, action) => {
